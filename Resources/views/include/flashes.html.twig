@@ -1,0 +1,13 @@
+{% for type,messages in app.flashes() %}
+    <div class="alert alert-{{ type == 'notification' ? 'info' : type }}">
+        {% if messages|length == 1 %}
+            {{ messages|first }}
+        {% else %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endfor %}
