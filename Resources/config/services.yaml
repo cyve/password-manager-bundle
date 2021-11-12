@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Cyve\PasswordManagerBundle\:
+        resource: '../../*'
+        exclude: '../../{DependencyInjection,Tests,CyvePasswordManagerBundle.php}'
+
+    Cyve\PasswordManagerBundle\Controller\:
+        resource: '../../Controller/*'
+        tags: ['controller.service_arguments']
