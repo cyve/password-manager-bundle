@@ -31,3 +31,13 @@ return [
 cyve_password_manager:
     resource: "@CyvePasswordManagerBundle/Resources/config/routing.yaml"
 ```
+```yaml
+// config/packages/security.yaml
+security:
+    firewalls:
+        main:
+            login_link:
+                check_route: cyve_password_manager_reset_password
+                signature_properties: ['id']
+                success_handler: Cyve\PasswordManagerBundle\Security\ResetPasswordSuccessHandler
+```
