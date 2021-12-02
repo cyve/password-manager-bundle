@@ -43,16 +43,16 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de votre mot de passe')
                     ->content(sprintf('Cliquez sur le bouton ci-dessous pour vous connecter et réinitialiser votre mot de passe. Ce lien expirera dans %d minutes.', $duration))
-                    ->action('Se connecter', $loginLinkDetails->getUrl())
+                    ->action('Connexion', $loginLinkDetails->getUrl())
                 ;
                 $mailer->send($email);
 
                 return $this->render('@CyvePasswordManager/request-login-link-confirmation.html.twig', ['form' => $form->createView(), 'duration' => $duration]);
             } catch (UserNotFoundException $e) {
-                $this->addFlash('error', sprintf('L\'utilisateur "%s" n\'existe pas', $e->getUserIdentifier()));
+                $this->addFlash('danger', sprintf('L\'utilisateur "%s" n\'existe pas', $e->getUserIdentifier()));
             } catch (\Exception $e) {
                 $this->logger->error($e->getMessage(), ['exception' => $e]);
-                $this->addFlash('error', 'Impossible de réinitialiser le mot de passe');
+                $this->addFlash('danger', 'Impossible de réinitialiser le mot de passe');
             }
         }
 
