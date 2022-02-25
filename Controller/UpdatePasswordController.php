@@ -5,7 +5,6 @@ namespace Cyve\PasswordManagerBundle\Controller;
 use Cyve\PasswordManagerBundle\Form\UpdatePasswordType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,10 +19,11 @@ class UpdatePasswordController extends AbstractController implements LoggerAware
 
     /**
      * @Route("/password/update", name="cyve_password_manager_update_password", methods={"GET", "POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, UserProviderInterface $userProvider): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(UpdatePasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
