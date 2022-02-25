@@ -2,16 +2,15 @@
 
 namespace Cyve\PasswordManagerBundle\Tests\Command;
 
-use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
+/**
+ * @group functionnal
+ */
 class ResetPasswordCommandTest extends KernelTestCase
 {
-    use RecreateDatabaseTrait;
-
     protected function setUp(): void
     {
         $application = new Application(self::bootKernel());

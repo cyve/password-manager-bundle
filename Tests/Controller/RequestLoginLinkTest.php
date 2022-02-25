@@ -2,14 +2,14 @@
 
 namespace Cyve\PasswordManagerBundle\Tests\Controller;
 
-use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @group functionnal
+ */
 class RequestLoginLinkTest extends WebTestCase
 {
-    use RecreateDatabaseTrait;
-
     public function test()
     {
         $client = self::createClient();

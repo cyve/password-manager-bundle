@@ -2,13 +2,13 @@
 
 namespace Cyve\PasswordManagerBundle\Tests\Controller;
 
-use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * @group functionnal
+ */
 class ResetPasswordTest extends WebTestCase
 {
-    use RecreateDatabaseTrait;
-
     public function test()
     {
         $client = self::createClient();
@@ -31,9 +31,5 @@ class ResetPasswordTest extends WebTestCase
         $client->request('GET', '/password/reset?user=admin@mail.com&expires=0&hash=foo');
 
         $this->assertResponseRedirects('http://localhost/login');
-
-        $client->followRedirect();
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('.alert.alert-danger', 'Lien de connexion invalide ou expiré.');
     }
 }
