@@ -35,7 +35,7 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 /** @var EmailAwareUserInterface $user */
-                $user = $userProvider->loadUserByIdentifier($form->get('username')->getData());
+                $user = $userProvider->loadUserByIdentifier($form->get('email')->getData());
                 $loginLinkDetails = $loginLinkHandler->createLoginLink($user);
                 $duration = floor(($loginLinkDetails->getExpiresAt()->getTimestamp() - time()) / 60);
 

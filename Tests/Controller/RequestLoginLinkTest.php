@@ -18,11 +18,11 @@ class RequestLoginLinkTest extends WebTestCase
         $this->assertResponseIsSuccessful();
 
         $client->submitForm('Réinitialiser', [
-            'request_login_link[username]' => 'lorem@mail.com',
+            'request_login_link[email]' => 'lorem@mail.com',
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorNotExists('.alert.alert-error');
+        $this->assertSelectorNotExists('.alert');
         $this->assertSelectorTextContains('p', 'Ce lien expirera dans 10 minutes');
 
         $this->assertEmailCount(1);
@@ -37,25 +37,38 @@ class RequestLoginLinkTest extends WebTestCase
         $this->assertStringStartsWith('Connexion', $messageContext['action_text']);
     }
 
-    public function testInvalidData()
+    public function testMissingEmail()
     {
         $client = self::createClient();
         $client->request('GET', '/password/request-login-link');
         $client->submitForm('Réinitialiser', [
-            'request_login_link[username]' => '',
+            'request_login_link[email]' => '',
         ]);
 
-        $this->assertSelectorTextContains('[for="request_login_link_username"] + *', 'Ce champ ne doit pas être vide');
+        $this->assertSelectorExists('#request_login_link_email.is-invalid');
+        $this->assertSelectorTextContains('#request_login_link_email + .invalid-feedback', 'Ce champ ne doit pas être vide');
     }
 
-    public function testUnknownUsername()
+    public function testInvalidEmail()
     {
         $client = self::createClient();
         $client->request('GET', '/password/request-login-link');
         $client->submitForm('Réinitialiser', [
-            'request_login_link[username]' => 'unknown',
+            'request_login_link[email]' => 'not email',
         ]);
 
-        $this->assertSelectorTextContains('.alert.alert-error', 'L\'utilisateur "unknown" n\'existe pas');
+        $this->assertSelectorExists('#request_login_link_email.is-invalid');
+        $this->assertSelectorTextContains('#request_login_link_email + .invalid-feedback', 'Ce champ doit être une adresse email valide');
+    }
+
+    public function testUnknownEmail()
+    {
+        $client = self::createClient();
+        $client->request('GET', '/password/request-login-link');
+        $client->submitForm('Réinitialiser', [
+            'request_login_link[email]' => 'unknown@mail.com',
+        ]);
+
+        $this->assertSelectorTextContains('.alert', 'L\'utilisateur "unknown@mail.com" n\'existe pas');
     }
 }
