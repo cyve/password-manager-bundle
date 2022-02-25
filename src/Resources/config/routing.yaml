@@ -2,5 +2,5 @@ cyve_password_manager:
     resource: ../../Controller/
     type: annotation
 
-cyve_password_manager_reset_password:
-    path: /password/reset
+#cyve_password_manager_reset_password:
+#    path: /password/reset
