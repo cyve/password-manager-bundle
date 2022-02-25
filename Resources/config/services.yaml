@@ -6,7 +6,7 @@ services:
 
     Cyve\PasswordManagerBundle\:
         resource: '../../*'
-        exclude: '../../{DependencyInjection,Tests,CyvePasswordManagerBundle.php}'
+        exclude: '../../{DependencyInjection,CyvePasswordManagerBundle.php}'
 
     Cyve\PasswordManagerBundle\Controller\:
         resource: '../../Controller/*'
