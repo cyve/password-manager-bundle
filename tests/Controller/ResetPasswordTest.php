@@ -13,11 +13,13 @@ class ResetPasswordTest extends WebTestCase
     {
         $client = self::createClient();
         $userProvider = self::getContainer()->get('security.user.provider.concrete.app_user_provider');
-        $user = $userProvider->loadUserByIdentifier('lorem@mail.com');
         $loginLinkHandler = self::getContainer()->get('security.authenticator.login_link_handler.main');
-        $loginLinkDetails = $loginLinkHandler->createLoginLink($user);
+        $user = $userProvider->loadUserByIdentifier('lorem@mail.com');
+        $loginLinkUrl = $loginLinkHandler->createLoginLink($user)->getUrl();
 
-        $client->request('GET', $loginLinkDetails->getUrl());
+        $this->assertStringStartsWith('http://localhost/password/reset?user=lorem@mail.com', $loginLinkUrl);
+
+        $client->request('GET', $loginLinkUrl);
         $this->assertResponseRedirects('http://localhost/password/update');
 
         $client->followRedirect();
@@ -25,7 +27,7 @@ class ResetPasswordTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Modifier le mot de passe');
     }
 
-    public function testInvalidToken()
+    public function testWithInvalidToken()
     {
         $client = self::createClient();
         $client->request('GET', '/password/reset?user=admin@mail.com&expires=0&hash=foo');

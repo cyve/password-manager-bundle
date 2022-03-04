@@ -10,15 +10,23 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class RequestLoginLinkTest extends WebTestCase
 {
-    public function test()
+    public function testForm()
     {
         $client = self::createClient();
         $client->request('GET', '/password/request-login-link');
 
         $this->assertResponseIsSuccessful();
+    }
 
-        $client->submitForm('Réinitialiser', [
-            'request_login_link[email]' => 'lorem@mail.com',
+    public function testSubmit()
+    {
+        $client = self::createClient();
+        $client->getContainer()->get('session')->set('_csrf/request_login_link', 'token');
+        $client->request('POST', '/password/request-login-link', [
+            'request_login_link' => [
+                'email' => 'lorem@mail.com',
+                '_token' => 'token',
+            ],
         ]);
 
         $this->assertResponseIsSuccessful();
@@ -37,36 +45,45 @@ class RequestLoginLinkTest extends WebTestCase
         $this->assertStringStartsWith('Connexion', $messageContext['action_text']);
     }
 
-    public function testMissingEmail()
+    public function testSubmitWithoutEmail()
     {
         $client = self::createClient();
-        $client->request('GET', '/password/request-login-link');
-        $client->submitForm('Réinitialiser', [
-            'request_login_link[email]' => '',
+        $client->getContainer()->get('session')->set('_csrf/request_login_link', 'token');
+        $client->request('POST', '/password/request-login-link', [
+            'request_login_link' => [
+                'email' => '',
+                '_token' => 'token',
+            ],
         ]);
 
         $this->assertSelectorExists('#request_login_link_email.is-invalid');
         $this->assertSelectorTextContains('#request_login_link_email + .invalid-feedback', 'Ce champ ne doit pas être vide');
     }
 
-    public function testInvalidEmail()
+    public function testSubmitWithInvalidEmail()
     {
         $client = self::createClient();
-        $client->request('GET', '/password/request-login-link');
-        $client->submitForm('Réinitialiser', [
-            'request_login_link[email]' => 'not email',
+        $client->getContainer()->get('session')->set('_csrf/request_login_link', 'token');
+        $client->request('POST', '/password/request-login-link', [
+            'request_login_link' => [
+                'email' => 'not email',
+                '_token' => 'token',
+            ],
         ]);
 
         $this->assertSelectorExists('#request_login_link_email.is-invalid');
         $this->assertSelectorTextContains('#request_login_link_email + .invalid-feedback', 'Ce champ doit être une adresse email valide');
     }
 
-    public function testUnknownEmail()
+    public function testSubmitWithUnknownEmail()
     {
         $client = self::createClient();
-        $client->request('GET', '/password/request-login-link');
-        $client->submitForm('Réinitialiser', [
-            'request_login_link[email]' => 'unknown@mail.com',
+        $client->getContainer()->get('session')->set('_csrf/request_login_link', 'token');
+        $client->request('POST', '/password/request-login-link', [
+            'request_login_link' => [
+                'email' => 'unknown@mail.com',
+                '_token' => 'token',
+            ],
         ]);
 
         $this->assertSelectorTextContains('.alert', 'L\'utilisateur "unknown@mail.com" n\'existe pas');

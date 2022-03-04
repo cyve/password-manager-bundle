@@ -12,7 +12,7 @@ class UpdatePasswordTest extends WebTestCase
     public function test()
     {
         $client = self::createClient();
-        $userProvider = static::getContainer()->get('security.user.provider.concrete.app_user_provider');
+        $userProvider = $client->getContainer()->get('security.user.provider.concrete.app_user_provider');
         $user = $userProvider->loadUserByIdentifier('lorem@mail.com');
         $client->loginUser($user);
 
@@ -27,7 +27,7 @@ class UpdatePasswordTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.alert', 'Le mot de passe a été modifié');
 
-        $userProvider = static::getContainer()->get('security.user.provider.concrete.app_user_provider');
+        $userProvider = $client->getContainer()->get('security.user.provider.concrete.app_user_provider');
         $user = $userProvider->loadUserByIdentifier('lorem@mail.com');
         $this->assertEquals('lorem2', $user->getPassword());
     }
