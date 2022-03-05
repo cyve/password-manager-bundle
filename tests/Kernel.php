@@ -5,12 +5,14 @@ namespace Cyve\PasswordManagerBundle\Tests;
 use Cyve\PasswordManagerBundle\CyvePasswordManagerBundle;
 use Cyve\PasswordManagerBundle\Security\ResetPasswordSuccessHandler;
 use Cyve\PasswordManagerBundle\Tests\Mock\InMemoryUserProvider;
+use Cyve\PasswordManagerBundle\Tests\Mock\Mailer;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -29,6 +31,11 @@ class Kernel extends BaseKernel
             new SecurityBundle(),
             new CyvePasswordManagerBundle(),
         ];
+    }
+
+    protected function configureRoutes(RoutingConfigurator $routes): void
+    {
+        $routes->import(__DIR__.'./../src/Resources/config/routing.yaml');
     }
 
     protected function configureContainer(ContainerConfigurator $container): void
@@ -84,8 +91,13 @@ class Kernel extends BaseKernel
         $container->services()->set(MailerInterface::class, Mailer::class);
     }
 
-    protected function configureRoutes(RoutingConfigurator $routes): void
+    public function getCacheDir(): string
     {
-        $routes->import(__DIR__.'./../src/Resources/config/routing.yaml');
+        return sys_get_temp_dir().'/cache/'.$this->environment;
+    }
+
+    public function getLogDir(): string
+    {
+        return sys_get_temp_dir().'/log';
     }
 }

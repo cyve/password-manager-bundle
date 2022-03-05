@@ -3,4 +3,3 @@
 composer.lock
 symfony.lock
 vendor/
-var/
