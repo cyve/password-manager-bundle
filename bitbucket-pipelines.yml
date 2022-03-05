@@ -1,0 +1,11 @@
+pipelines:
+  branches:
+    master:
+      - step:
+          image: cyve/php
+          name: Test
+          caches:
+            - composer
+          script:
+            - composer install --no-progress --no-interaction --no-scripts --optimize-autoloader --prefer-dist
+            - vendor/bin/phpunit
