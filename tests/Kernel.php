@@ -80,6 +80,8 @@ class Kernel extends BaseKernel
         $container->services()->set('twig.loader.array_loader', ArrayLoader::class)->args([
             ['base.html.twig' => '<html><head><title>{%% block title %%}{%% endblock %%}</title></head><body>{%% block body %%}{%% endblock %%}</body></html>'],
         ])->tag('twig.loader');
+
+        $container->services()->set(MailerInterface::class, Mailer::class);
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
