@@ -10,6 +10,7 @@
         <ini name="memory_limit" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="KERNEL_CLASS" value="Cyve\PasswordManagerBundle\Tests\Kernel" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
     </php>
 
     <testsuites>
