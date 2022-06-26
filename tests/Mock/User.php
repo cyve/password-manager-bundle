@@ -28,17 +28,17 @@ class User implements UserInterface, EmailAwareUserInterface, PasswordAuthentica
         return $this->email;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->email;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -53,12 +53,12 @@ class User implements UserInterface, EmailAwareUserInterface, PasswordAuthentica
         $this->password = $password;
     }
 
-    public function getSalt()
+    public function getSalt(): string
     {
         return '';
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 }

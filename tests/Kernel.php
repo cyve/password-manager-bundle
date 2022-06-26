@@ -35,7 +35,7 @@ class Kernel extends BaseKernel
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        $routes->import(__DIR__.'/../src/Resources/config/routing.yaml');
+        $routes->import('../src/Resources/config/routing.yaml');
     }
 
     protected function configureContainer(ContainerConfigurator $container): void
@@ -80,7 +80,7 @@ class Kernel extends BaseKernel
             ],
         ]);
 
-        $container->import(__DIR__.'/../src/Resources/config/services.yaml');
+        $container->import('../src/Resources/config/services.yaml');
 
         $container->services()->set(InMemoryUserProvider::class);
         $container->services()->remove('twig.loader.filesystem');

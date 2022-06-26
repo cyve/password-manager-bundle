@@ -11,15 +11,7 @@ use Symfony\Component\Mailer\MailerInterface;
  */
 class RequestLoginLinkTest extends WebTestCase
 {
-    public function testForm()
-    {
-        $client = self::createClient();
-        $client->request('GET', '/password/request-login-link');
-
-        $this->assertResponseIsSuccessful();
-    }
-
-    public function testSubmit()
+    public function test()
     {
         $client = self::createClient();
         $client->request('GET', '/password/request-login-link');
@@ -31,7 +23,7 @@ class RequestLoginLinkTest extends WebTestCase
         ]);
 
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorNotExists('.alert');
+        $this->assertSelectorNotExists('.alert.alert-error');
         $this->assertSelectorTextContains('p', 'Ce lien expirera dans 10 minutes');
 
         $mailer = $client->getContainer()->get(MailerInterface::class);
@@ -90,6 +82,6 @@ class RequestLoginLinkTest extends WebTestCase
             'request_login_link[email]' => 'unknown@mail.com',
         ]);
 
-        $this->assertSelectorTextContains('.alert', 'L\'utilisateur "unknown@mail.com" n\'existe pas');
+        $this->assertSelectorTextContains('.alert.alert-danger', 'L\'utilisateur "unknown@mail.com" n\'existe pas');
     }
 }

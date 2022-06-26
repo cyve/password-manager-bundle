@@ -27,7 +27,7 @@ class InMemoryUserProvider implements UserProviderInterface, PasswordUpgraderInt
         return $class === User::class;
     }
 
-    public function loadUserByIdentifier(string $username)
+    public function loadUserByIdentifier(string $username): UserInterface
     {
         if (!array_key_exists($username, $this->users)) {
             $exception = new UserNotFoundException();
@@ -44,7 +44,7 @@ class InMemoryUserProvider implements UserProviderInterface, PasswordUpgraderInt
         $this->loadUserByIdentifier($username);
     }
 
-    public function upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword)
+    public function upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword): void
     {
         $user->setPassword($newHashedPassword);
     }

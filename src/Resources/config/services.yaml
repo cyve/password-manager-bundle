@@ -4,10 +4,12 @@ services:
         autoconfigure: true
         public: false
 
-    Cyve\PasswordManagerBundle\:
-        resource: '../../*'
-        exclude: '../../{DependencyInjection,CyvePasswordManagerBundle.php}'
+    Cyve\PasswordManagerBundle\Command\:
+        resource: '../../Command/*'
 
     Cyve\PasswordManagerBundle\Controller\:
         resource: '../../Controller/*'
         tags: ['controller.service_arguments']
+
+    Cyve\PasswordManagerBundle\Security\:
+        resource: '../../Security/*'
