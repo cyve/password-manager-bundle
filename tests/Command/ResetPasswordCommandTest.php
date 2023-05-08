@@ -11,6 +11,8 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ResetPasswordCommandTest extends KernelTestCase
 {
+    private CommandTester $commandTester;
+
     protected function setUp(): void
     {
         $application = new Application(self::bootKernel());
