@@ -29,8 +29,7 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
         UserProviderInterface $userProvider,
         MailerInterface $mailer,
         LoginLinkHandlerInterface $loginLinkHandler
-    ): Response
-    {
+    ): Response {
         $form = $this->createForm(RequestLoginLinkType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

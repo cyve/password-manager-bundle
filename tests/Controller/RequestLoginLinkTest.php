@@ -38,7 +38,6 @@ class RequestLoginLinkTest extends WebTestCase
         $this->assertStringContainsString('Ce lien expirera dans 10 minutes', $messageContext['content']);
         $this->assertStringStartsWith('http://localhost/password/reset?user=lorem@mail.com', $messageContext['action_url']);
         $this->assertStringStartsWith('Connexion', $messageContext['action_text']);
-
     }
 
     public function testSubmitWithoutEmail()
