@@ -20,6 +20,7 @@ class UpdatePasswordController extends AbstractController implements LoggerAware
     /**
      * @Route("/password/update", name="cyve_password_manager_update_password", methods={"GET","POST"})
      */
+    #[Route('/password/update', name: 'cyve_password_manager_update_password', methods: ["GET","POST"])]
     public function __invoke(Request $request, UserPasswordHasherInterface $passwordHasher, UserProviderInterface $userProvider): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

@@ -23,6 +23,7 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
     /**
      * @Route("/password/request-login-link", name="cyve_password_manager_request_login_link", methods={"GET","POST"})
      */
+    #[Route('/password/request-login-link', name: 'cyve_password_manager_request_login_link', methods: ["GET","POST"])]
     public function __invoke(
         Request $request,
         UserProviderInterface $userProvider,
