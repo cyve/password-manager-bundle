@@ -4,8 +4,9 @@ services:
         autoconfigure: true
         public: false
 
-    Cyve\PasswordManagerBundle\Command\:
-        resource: '../../Command/*'
+    Cyve\PasswordManagerBundle\Command\ResetPasswordCommand:
+        tags:
+            - { name: 'console.command', command: 'cyve:password:reset' }
 
     Cyve\PasswordManagerBundle\Controller\:
         resource: '../../Controller/*'

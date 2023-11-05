@@ -2,6 +2,7 @@
 
 namespace Cyve\PasswordManagerBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,10 +14,9 @@ use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+#[AsCommand(name: 'cyve:password:reset')]
 class ResetPasswordCommand extends Command
 {
-    protected static $defaultName = 'cyve:password:reset';
-
     private UserProviderInterface $userProvider;
     private UserPasswordHasherInterface $userpasswordHasher;
 
