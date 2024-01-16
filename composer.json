@@ -1,6 +1,6 @@
 {
     "name": "cyve/password-manager-bundle",
-    "description": "Password management bundle for Symfony",
+    "description": "Password management and recovery bundle for Symfony using login links",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
