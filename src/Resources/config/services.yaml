@@ -11,6 +11,3 @@ services:
     Cyve\PasswordManagerBundle\Controller\:
         resource: '../../Controller/*'
         tags: ['controller.service_arguments']
-
-    Cyve\PasswordManagerBundle\Security\:
-        resource: '../../Security/*'

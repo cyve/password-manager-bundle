@@ -3,7 +3,6 @@
 namespace Cyve\PasswordManagerBundle\Tests;
 
 use Cyve\PasswordManagerBundle\CyvePasswordManagerBundle;
-use Cyve\PasswordManagerBundle\Security\ResetPasswordSuccessHandler;
 use Cyve\PasswordManagerBundle\Tests\Mock\InMemoryUserProvider;
 use Cyve\PasswordManagerBundle\Tests\Mock\Mailer;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -74,7 +73,6 @@ class Kernel extends BaseKernel
                     'login_link' => [
                         'check_route' => 'cyve_password_manager_reset_password',
                         'signature_properties' => ['id'],
-                        'success_handler' => ResetPasswordSuccessHandler::class,
                     ],
                 ],
             ],
