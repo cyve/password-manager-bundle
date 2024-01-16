@@ -15,7 +15,7 @@ class ResetPasswordTest extends WebTestCase
         $userProvider = self::getContainer()->get('security.user.provider.concrete.app_user_provider');
         $loginLinkHandler = self::getContainer()->get('security.authenticator.login_link_handler.main');
         $user = $userProvider->loadUserByIdentifier('lorem@mail.com');
-        $loginLinkUrl = $loginLinkHandler->createLoginLink($user)->getUrl();
+        $loginLinkUrl = $loginLinkHandler->createLoginLink($user)->getUrl().'&_target_path=/password/update';
 
         $this->assertStringStartsWith('http://localhost/password/reset?user=lorem@mail.com', $loginLinkUrl);
 

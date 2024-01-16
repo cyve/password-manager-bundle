@@ -34,13 +34,14 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
                 /** @var EmailAwareUserInterface $user */
                 $user = $userProvider->loadUserByIdentifier($form->get('email')->getData());
                 $loginLinkDetails = $loginLinkHandler->createLoginLink($user);
+                $loginLink = $loginLinkDetails->getUrl().'&_target_path='.$this->generateUrl('cyve_password_manager_update_password');
                 $duration = floor(($loginLinkDetails->getExpiresAt()->getTimestamp() - time()) / 60);
 
                 $email = NotificationEmail::asPublicEmail()
                     ->to($user->getEmail())
                     ->subject('Réinitialisation de votre mot de passe')
                     ->content(sprintf('Cliquez sur le bouton ci-dessous pour vous connecter et réinitialiser votre mot de passe. Ce lien expirera dans %d minutes.', $duration))
-                    ->action('Connexion', $loginLinkDetails->getUrl())
+                    ->action('Connexion', $loginLink)
                 ;
                 $mailer->send($email);
 
