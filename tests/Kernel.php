@@ -58,7 +58,6 @@ class Kernel extends BaseKernel
         ]);
 
         $container->extension('security', [
-            'enable_authenticator_manager' => true,
             'password_hashers' => [
                 PasswordAuthenticatedUserInterface::class => 'plaintext',
             ],
