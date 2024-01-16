@@ -1,3 +1,6 @@
 cyve_password_manager:
     resource: ../../Controller/
     type: attribute
+
+cyve_password_manager_reset_password:
+    path: /password/reset
