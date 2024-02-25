@@ -3,14 +3,16 @@
 namespace Cyve\PasswordManagerBundle\Tests\Controller;
 
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Mailer\MailerInterface;
 
 /**
  * @group functionnal
  */
 class RequestLoginLinkTest extends WebTestCase
 {
+    use MailerAssertionsTrait;
+
     public function test()
     {
         $client = self::createClient();
@@ -26,18 +28,18 @@ class RequestLoginLinkTest extends WebTestCase
         $this->assertSelectorNotExists('.alert.alert-error');
         $this->assertSelectorTextContains('p', 'Ce lien expirera dans 10 minutes');
 
-        $mailer = $client->getContainer()->get(MailerInterface::class);
-        $messages = $mailer->getMessages();
-        $this->assertCount(1, $messages);
-        $message = $messages[0];
-        $this->assertInstanceOf(NotificationEmail::class, $message);
+        $this->assertEmailCount(1);
 
-        $this->assertEquals('Réinitialisation de votre mot de passe', $message->getSubject());
-        $this->assertEquals('lorem@mail.com', $message->getTo()[0]->toString());
-        $messageContext = $message->getContext();
-        $this->assertStringContainsString('Ce lien expirera dans 10 minutes', $messageContext['content']);
-        $this->assertStringStartsWith('http://localhost/password/reset?user=lorem@mail.com', $messageContext['action_url']);
-        $this->assertStringStartsWith('Connexion', $messageContext['action_text']);
+        $email = $this->getMailerMessage();
+        $this->assertInstanceOf(NotificationEmail::class, $email);
+        $this->assertEmailSubjectContains($email, 'Réinitialisation de votre mot de passe');
+        $this->assertEmailAddressContains($email, 'To', 'lorem@mail.com');
+        $this->assertEmailTextBodyContains($email, 'Ce lien expirera dans 10 minutes');
+        $this->assertEmailHtmlBodyContains($email, 'Ce lien expirera dans 10 minutes');
+
+        $context = $email->getContext();
+        $this->assertStringStartsWith('http://localhost/password/reset?user=lorem@mail.com', $context['action_url']);
+        $this->assertStringStartsWith('Connexion', $context['action_text']);
     }
 
     public function testSubmitWithoutEmail()

@@ -4,14 +4,12 @@ namespace Cyve\PasswordManagerBundle\Tests;
 
 use Cyve\PasswordManagerBundle\CyvePasswordManagerBundle;
 use Cyve\PasswordManagerBundle\Tests\Mock\InMemoryUserProvider;
-use Cyve\PasswordManagerBundle\Tests\Mock\Mailer;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -84,8 +82,6 @@ class Kernel extends BaseKernel
         $container->services()->set('twig.loader.array_loader', ArrayLoader::class)->args([
             ['base.html.twig' => '<html><head><title>{%% block title %%}{%% endblock %%}</title></head><body>{%% block body %%}{%% endblock %%}</body></html>'],
         ])->tag('twig.loader');
-
-        $container->services()->set(MailerInterface::class, Mailer::class);
     }
 
     public function getCacheDir(): string
