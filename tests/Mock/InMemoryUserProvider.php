@@ -3,6 +3,7 @@
 namespace Cyve\PasswordManagerBundle\Tests\Mock;
 
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -14,7 +15,7 @@ class InMemoryUserProvider implements UserProviderInterface, PasswordUpgraderInt
 
     public function __construct()
     {
-        $this->users['lorem@mail.com'] = new User('lorem@mail.com', 'lorem');
+        $this->users['lorem@mail.com'] = new InMemoryUser('lorem@mail.com', 'lorem');
     }
 
     public function refreshUser(UserInterface $user): UserInterface
@@ -24,7 +25,7 @@ class InMemoryUserProvider implements UserProviderInterface, PasswordUpgraderInt
 
     public function supportsClass(string $class): bool
     {
-        return $class === User::class;
+        return $class === InMemoryUser::class;
     }
 
     public function loadUserByIdentifier(string $username): UserInterface
@@ -46,6 +47,6 @@ class InMemoryUserProvider implements UserProviderInterface, PasswordUpgraderInt
 
     public function upgradePassword(PasswordAuthenticatedUserInterface|UserInterface $user, string $newHashedPassword): void
     {
-        $user->setPassword($newHashedPassword);
+        \Closure::bind(fn () => $this->password = $newHashedPassword, $user, InMemoryUser::class)();
     }
 }

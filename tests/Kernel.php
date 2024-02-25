@@ -69,7 +69,7 @@ class Kernel extends BaseKernel
                     'provider' => 'app_user_provider',
                     'login_link' => [
                         'check_route' => 'cyve_password_manager_reset_password',
-                        'signature_properties' => ['id'],
+                        'signature_properties' => ['userIdentifier'],
                     ],
                 ],
             ],

@@ -5,7 +5,6 @@ Password management and recovery bundle for Symfony using [login links](https://
 ```bash
 $ composer require cyve/password-manager-bundle`
 ```
-Create SSH key on prod machine and upload it on Bitbucket
 
 ## Configuration
 ```php
@@ -26,23 +25,8 @@ security:
     firewalls:
         main:
             login_link:
-                check_route: cyve_password_manager_reset_password # or any login-link route
-                signature_properties: ['id'] # add other properties if you want
-```
-
-Create a [User class](https://symfony.com/doc/current/security.html#the-user) implementing `PasswordAuthenticatedUserInterface` and `Cyve\PasswordManagerBundle\Entity\EmailAwareUserInterface`.
-```php
-class User implements UserInterface, PasswordAuthenticatedUserInterface, EmailAwareUserInterface
-{
-    // ...
-    
-    private ?string $email = null;
-    
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-}
+                check_route: app_login_check # or any login-link route
+                signature_properties: ['userIdentifier'] # add other properties if you want
 ```
 
 /!\ The login link contains a `_target_path` query parameter to redirect the user to the `/password/update` route after the login. If you change the name of the parameter in the security config, the Symfony default redirection rules will be applied.
