@@ -2,7 +2,6 @@
 
 namespace Cyve\PasswordManagerBundle\Controller;
 
-use Cyve\PasswordManagerBundle\Entity\EmailAwareUserInterface;
 use Cyve\PasswordManagerBundle\Form\RequestLoginLinkType;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -31,14 +30,14 @@ class RequestLoginLinkController extends AbstractController implements LoggerAwa
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                /** @var EmailAwareUserInterface $user */
-                $user = $userProvider->loadUserByIdentifier($form->get('email')->getData());
+                $email = $form->get('email')->getData();
+                $user = $userProvider->loadUserByIdentifier($email);
                 $loginLinkDetails = $loginLinkHandler->createLoginLink($user);
                 $loginLink = $loginLinkDetails->getUrl().'&_target_path='.$this->generateUrl('cyve_password_manager_update_password');
                 $duration = floor(($loginLinkDetails->getExpiresAt()->getTimestamp() - time()) / 60);
 
                 $email = NotificationEmail::asPublicEmail()
-                    ->to($user->getEmail())
+                    ->to($email)
                     ->subject('Réinitialisation de votre mot de passe')
                     ->content(sprintf('Cliquez sur le bouton ci-dessous pour vous connecter et réinitialiser votre mot de passe. Ce lien expirera dans %d minutes.', $duration))
                     ->action('Connexion', $loginLink)
